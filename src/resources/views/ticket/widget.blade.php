@@ -11,7 +11,7 @@
 <body>
     <div class="widget-container">
         <h1 class="widget-title">Ticket form</h1>
-        <form class="widget-form" method="post" action="#">
+        <form class="widget-form" id="widget-form">
             <div class="widget-field">
                 <label for="name">Name</label>
                 <input class="widget-input" name="name" type="text" placeholder="name">
@@ -38,6 +38,7 @@
             </div>
             <button class="widget-button" type="submit">Send</button>
         </form>
+        <div id="message" class="message"></div>
     </div>
 </body>
 </html>

@@ -6,6 +6,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/tickets', function () {
+Route::get('/widget', function () {
     return view('ticket.widget');
 });

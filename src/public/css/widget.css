@@ -57,3 +57,8 @@ textarea.widget-input {
     cursor: pointer;
     transition: background 0.25s, transform 0.1s;
 }
+
+.message {
+    margin-top: 10px;
+    color: red;
+}
