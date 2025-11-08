@@ -15,7 +15,10 @@ RUN apt-get update && apt-get install -y \
         pdo_mysql \
         gd \
         intl \
-        zip
+        zip \
+        exif
+
+RUN docker-php-ext-enable exif
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 

@@ -1,0 +1,64 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #f5f7fb;
+}
+
+.widget-container {
+    background: #fff;
+    width: 100%;
+    max-width: 300px;
+    padding: 30px 40px;
+    border-radius: 12px;
+}
+
+.widget-title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+    color: #333;
+}
+
+.widget-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.widget-field label {
+    font-size: 14px;
+    margin-bottom: 6px;
+}
+
+.widget-input,
+.widget-input-file,
+textarea.widget-input {
+    padding: 10px 12px;
+    border: 1px solid #d3d6db;
+    border-radius: 6px;
+    font-size: 15px;
+    color: #333;
+    background: #fafafa;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+
+.widget-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #4a90e2;
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.25s, transform 0.1s;
+}
+
+.message {
+    margin-top: 10px;
+    color: red;
+}
