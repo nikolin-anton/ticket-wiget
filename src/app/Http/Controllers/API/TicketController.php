@@ -3,11 +3,22 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TicketStoreRequest;
+use App\Http\Resources\TicketStoreResource;
 use App\Models\Ticket;
+use App\Repositories\Ticket\TicketRepositoryInterface;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
 {
+
+    private TicketRepositoryInterface $ticket;
+
+    public function __construct(TicketRepositoryInterface $ticket)
+    {
+        $this->ticket = $ticket;
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -19,9 +30,10 @@ class TicketController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(TicketStoreRequest $request)
     {
-       dd($request->all());
+        $ticket = $this->ticket->create($request->validated());
+        return TicketStoreResource::make($ticket);
     }
 
     /**
