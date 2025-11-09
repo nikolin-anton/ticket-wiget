@@ -8,15 +8,19 @@ use App\Http\Requests\UpdateStatusRequest;
 use App\Http\Resources\TicketStoreResource;
 use App\Models\Ticket;
 use App\Repositories\Ticket\TicketRepositoryInterface;
+use App\Services\FileService;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class TicketController extends Controller
 {
 
     private TicketRepositoryInterface $ticket;
+    public FileService $fileService;
 
     public function __construct(TicketRepositoryInterface $ticket)
     {
         $this->ticket = $ticket;
+        $this->fileService = new FileService();
     }
 
     /**
@@ -62,5 +66,14 @@ class TicketController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function downloadFile(Media $media)
+    {
+        return $this->fileService->download($media);
+    }
+
+    public function downloadAllFile(Ticket $ticket)
+    {
+        return $this->fileService->downloadAllFille($ticket, 'tickets');
     }
 }
