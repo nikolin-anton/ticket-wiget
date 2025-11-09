@@ -41,4 +41,45 @@ class TicketRepository implements TicketRepositoryInterface
 
         return $ticket;
     }
+
+    public function index()
+    {
+        return Ticket::query()
+            ->with('customer')
+            ->when(request('email'), function ($query) {
+                $query->whereHas('customer', function ($query) {
+                    $query->where('email', 'like', '%' . request('email') . '%');
+                });
+            })
+            ->when(request('phone'), function ($query) {
+                $query->whereHas('customer', function ($query) {
+                    $query->where('phone', 'like', '%' . request('phone') . '%');
+                });
+            })
+            ->when(request('status'), function ($query) {
+                $query->where('status', request('status'));
+            })
+            ->when(request('date_from'), function ($query) {
+                $query->whereDate('created_at', '>=', request('date_from'));
+            })
+            ->when(request('date_to'), function ($query) {
+                $query->whereDate('created_at', '<=', request('date_to'));
+            })
+            ->latest()
+            ->paginate(15);
+    }
+
+    public function show($ticket)
+    {
+        $ticket->load('customer');
+        $ticket->files = $ticket->getMedia('tickets');
+        return $ticket;
+    }
+
+    public function updateStatus($ticket, $request)
+    {
+        $ticket->update(['status' => $request['status']]);
+
+        return $ticket;
+    }
 }
