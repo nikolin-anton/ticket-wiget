@@ -29,33 +29,49 @@
             </div>
         </form>
     </div>
-    <div class="card p-3">
+    <div class="card p-3 mb-4">
         <h3>Files</h3>
         @if($ticket->files->count())
-            <ul>
+            <div class="d-flex flex-wrap" style="gap: 20px">
                 @foreach($ticket->files as $file)
-                    <div class="text-centre" style="width: 120px">
-                        @if(str_contains($file->mime_type, 'image/'))
-                            <a href="{{$file->getUrl()}}" target="_blank">
-                                <img src="{{$file->getUrl()}}" alt="image"
-                                     style="width: 100%; height: 80px; border-radius: 5px; margin-bottom: 3px">
-                            </a>
-                        @elseif(str_contains($file->mime_type, 'application/pdf'))
-                            <a href="{{$file->getUrl()}}" target="_blank">
-                                <img src="{{asset('icons/pdf.png')}}" alt="image"
-                                     style="width: 100%; height: 80px; border-radius: 5px">
-                            </a>
-                        @else
-                            <a href="{{$file->getUrl()}}" target="_blank">
-                                <img src="{{asset('icons/file.png')}}" alt="image"
-                                     style="width: 100%; height: 80px; border-radius: 5px">
-                            </a>
-                        @endif
-                    </div>
+
+                        <div class="text-centre" style="width: 120px">
+                            @if(str_contains($file->mime_type, 'image/'))
+                                <a href="{{$file->getUrl()}}" target="_blank">
+                                    <img src="{{$file->getUrl()}}" alt="image"
+                                         style="width: 100%; height: 80px; border-radius: 5px; margin-bottom: 3px">
+                                </a>
+                            @elseif(str_contains($file->mime_type, 'application/pdf'))
+                                <a href="{{$file->getUrl()}}" target="_blank">
+                                    <img src="{{asset('icons/pdf.png')}}" alt="image"
+                                         style="width: 100%; height: 80px; border-radius: 5px">
+                                </a>
+                            @else
+                                <a href="{{$file->getUrl()}}" target="_blank">
+                                    <img src="{{asset('icons/file.png')}}" alt="image"
+                                         style="width: 100%; height: 80px; border-radius: 5px">
+                                </a>
+                            @endif
+                            <div>
+                                <div>{{$file->file_name}}</div>
+                                <a href="{{route('tickets.downloadFile', $file->id)}}"
+                                   class="btn btn-sm btn-primary mt-1"
+                                >Download</a>
+                            </div>
+                        </div>
+
                 @endforeach
-            </ul>
+            </div>
         @else
             <p>No files</p>
+        @endif
+    </div>
+
+    <div class="card p-3">
+        @if($ticket->files->count())
+            <a href="{{route('tickets.downloadAllFile', $ticket->id)}}"
+               class="btn btn-sm btn-primary" style="width: 180px"
+            >Download All (ZIP)</a>
         @endif
     </div>
 @endsection
