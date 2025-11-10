@@ -17,5 +17,4 @@ interface TicketRepositoryInterface
     public function getStatistics();
 
     public function findRecentByPhoneOrEmail($phone, $email);
-
 }

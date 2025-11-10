@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -26,13 +25,13 @@ class RoleSeeder extends Seeder
         User::factory()->create([
             'name' => 'admin',
             'email' => 'admin@mail.com',
-            'password' => '12345678'
+            'password' => '12345678',
         ])->assignRole($role_admin);
 
         User::factory()->create([
             'name' => 'manager',
             'email' => 'manager@mail.com',
-            'password' => '12345678'
+            'password' => '12345678',
         ])->assignRole($role_manager);
     }
 }

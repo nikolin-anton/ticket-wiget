@@ -11,7 +11,8 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 
 class Ticket extends Model implements HasMedia
 {
-    use InteractsWithMedia, HasFactory;
+    use HasFactory;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'customer_id',
