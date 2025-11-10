@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layout.admin')
 
 @section('content')
     <h2 class="mb-3">Tickets</h2>
