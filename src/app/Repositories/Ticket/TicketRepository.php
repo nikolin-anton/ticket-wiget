@@ -107,4 +107,17 @@ class TicketRepository implements TicketRepositoryInterface
             'month' => $this->model->query()->lastMonth()->count(),
         ];
     }
+
+    public function findRecentByPhoneOrEmail($phone, $email)
+    {
+        return $this->model->query()
+            ->where('created_at', '>=', now()->subDay())
+            ->where(function ($query) use ($phone, $email) {
+                $query->when($phone, fn ($query) =>
+                $query->orWhereHas('customer', fn($query) => $query->where('phone', 'like', '%' . $phone . '%')))
+                    ->when($email, fn ($query) =>
+                    $query->orWhereHas('customer', fn($query) => $query->where('email', 'like', '%' . $email . '%')));
+            })
+            ->exists();
+    }
 }

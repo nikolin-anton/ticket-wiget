@@ -38,7 +38,14 @@ class TicketController extends Controller
      */
     public function store(TicketStoreRequest $request)
     {
-        $ticket = $this->ticket->create($request->validated());
+        $request = $request->validated();
+       if( $this->ticket->findRecentByPhoneOrEmail($request['phone'], $request['email']))
+       {
+           return response()->json([
+               'message' => 'You have already submitted a request within the last 24 hours.'
+           ], 429);
+       }
+        $ticket = $this->ticket->create($request);
         return TicketStoreResource::make($ticket);
     }
 
