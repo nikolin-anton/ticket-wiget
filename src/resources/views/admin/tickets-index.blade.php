@@ -28,6 +28,7 @@
         </div>
         <div class="col-md-2">
             <button class="btn btn-primary w-100">Filter</button>
+            <a href="{{route('tickets.index')}}" class="btn btn-sm btn-secondary mt-2">Reset filers</a>
         </div>
     </form>
     <table class="table table-bordered bg-white">
