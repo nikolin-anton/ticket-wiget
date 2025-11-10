@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\MediaLibrary\HasMedia;
@@ -28,5 +29,23 @@ class Ticket extends Model implements HasMedia
     public function responded(): BelongsTo
     {
         return $this->belongsTo(User::class, 'responded_id');
+    }
+
+    #[Scope]
+    public function lastDay($query)
+    {
+        return $query->where('created_at', '>=', now()->subDay());
+    }
+
+    #[Scope]
+    public function lastWeek($query)
+    {
+        return $query->where('created_at', '>=', now()->subWeek());
+    }
+
+    #[Scope]
+    public function lastMonth($query)
+    {
+        return $query->where('created_at', '>=', now()->subMonth());
     }
 }
