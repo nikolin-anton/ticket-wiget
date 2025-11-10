@@ -1,3 +1,4 @@
+@php use App\Enum\TicketStatusEnum; @endphp
 @extends('layout.admin')
 
 @section('content')
@@ -12,9 +13,11 @@
         <div class="col-md-2">
             <select name="status" class="form-select">
                 <option value="">Status</option>
-                <option value="new" {{request('status') == 'new' ? 'selected' : ''}}>Open</option>
-                <option value="new" {{request('status') == 'in_progress' ? 'selected' : ''}}>In progress</option>
-                <option value="new" {{request('status') == 'processed' ? 'selected' : ''}}>Processed</option>
+                @foreach(TicketStatusEnum::cases() as $status)
+                    <option value="{{$status->value}}" {{request('status') === $status->value ? 'selected' : ''}}>
+                        {{$status->label()}}
+                    </option>
+                @endforeach
             </select>
         </div>
         <div class="col-md-2">
@@ -47,17 +50,17 @@
                 <td>{{$ticket->subject}}</td>
                 <td>{{$ticket->customer->email}}</td>
                 <td>{{$ticket->customer->phone}}</td>
-                <td>{{$ticket->status}}</td>
+                <td>{{TicketStatusEnum::from($ticket->status)->label()}}</td>
                 <td>{{$ticket->created_at}}</td>
                 <td>{{$ticket->responded_at}}</td>
                 <td>
                     <a href="{{route('tickets.show', $ticket)}}" class="btn btn-sm btn-primary">View</a>
                     @role('admin')
-                        <form method="POST" action="{{route('tickets.destroy', $ticket->id)}}" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-                        </form>
+                    <form method="POST" action="{{route('tickets.destroy', $ticket->id)}}" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
                     @endrole
                 </td>
             </tr>
