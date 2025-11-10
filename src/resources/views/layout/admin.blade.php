@@ -28,6 +28,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('tickets.index')}}">Tickets</a>
                     </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">{{auth()->user()->name}}</a>
+                        </li>
                     <li class="nav-item">
                         <form method="POST" action="{{route('logout')}}">
                             @csrf

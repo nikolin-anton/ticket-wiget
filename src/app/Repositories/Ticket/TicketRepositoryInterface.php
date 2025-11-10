@@ -12,4 +12,6 @@ interface TicketRepositoryInterface
 
     public function updateStatus($ticket, $request);
 
+    public function destroy($ticket);
+
 }

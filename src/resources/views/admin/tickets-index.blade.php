@@ -49,9 +49,14 @@
                 <td>{{$ticket->status}}</td>
                 <td>{{$ticket->created_at}}</td>
                 <td>
-                    <a href="{{route('tickets.show', $ticket)}}" class="btn btn-sm btn-primary">
-                        View
-                    </a>
+                    <a href="{{route('tickets.show', $ticket)}}" class="btn btn-sm btn-primary">View</a>
+                    @role('admin')
+                        <form method="POST" action="{{route('tickets.destroy', $ticket->id)}}" class="d-inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    @endrole
                 </td>
             </tr>
         @endforeach
