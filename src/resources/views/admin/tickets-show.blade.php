@@ -1,4 +1,4 @@
-@extends('layout.layout')
+@extends('layout.admin')
 
 @section('content')
     <h2 class="mb-3">Ticket {{$ticket->id}}</h2>
@@ -35,30 +35,30 @@
             <div class="d-flex flex-wrap" style="gap: 20px">
                 @foreach($ticket->files as $file)
 
-                        <div class="text-centre" style="width: 120px">
-                            @if(str_contains($file->mime_type, 'image/'))
-                                <a href="{{$file->getUrl()}}" target="_blank">
-                                    <img src="{{$file->getUrl()}}" alt="image"
-                                         style="width: 100%; height: 80px; border-radius: 5px; margin-bottom: 3px">
-                                </a>
-                            @elseif(str_contains($file->mime_type, 'application/pdf'))
-                                <a href="{{$file->getUrl()}}" target="_blank">
-                                    <img src="{{asset('icons/pdf.png')}}" alt="image"
-                                         style="width: 100%; height: 80px; border-radius: 5px">
-                                </a>
-                            @else
-                                <a href="{{$file->getUrl()}}" target="_blank">
-                                    <img src="{{asset('icons/file.png')}}" alt="image"
-                                         style="width: 100%; height: 80px; border-radius: 5px">
-                                </a>
-                            @endif
-                            <div>
-                                <div>{{$file->file_name}}</div>
-                                <a href="{{route('tickets.downloadFile', $file->id)}}"
-                                   class="btn btn-sm btn-primary mt-1"
-                                >Download</a>
-                            </div>
+                    <div class="text-centre" style="width: 120px">
+                        @if(str_contains($file->mime_type, 'image/'))
+                            <a href="{{$file->getUrl()}}" target="_blank">
+                                <img src="{{$file->getUrl()}}" alt="image"
+                                     style="width: 100%; height: 80px; border-radius: 5px; margin-bottom: 3px">
+                            </a>
+                        @elseif(str_contains($file->mime_type, 'application/pdf'))
+                            <a href="{{$file->getUrl()}}" target="_blank">
+                                <img src="{{asset('icons/pdf.png')}}" alt="image"
+                                     style="width: 100%; height: 80px; border-radius: 5px">
+                            </a>
+                        @else
+                            <a href="{{$file->getUrl()}}" target="_blank">
+                                <img src="{{asset('icons/file.png')}}" alt="image"
+                                     style="width: 100%; height: 80px; border-radius: 5px">
+                            </a>
+                        @endif
+                        <div>
+                            <div>{{$file->file_name}}</div>
+                            <a href="{{route('tickets.downloadFile', $file->id)}}"
+                               class="btn btn-sm btn-primary mt-1"
+                            >Download</a>
                         </div>
+                    </div>
 
                 @endforeach
             </div>
