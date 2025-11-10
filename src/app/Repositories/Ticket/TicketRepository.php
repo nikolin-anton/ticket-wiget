@@ -52,7 +52,7 @@ class TicketRepository implements TicketRepositoryInterface
     public function index()
     {
         return Ticket::query()
-            ->with('customer')
+            ->with(['customer', 'responded'])
             ->when(request('email'), function ($query) {
                 $query->whereHas('customer', function ($query) {
                     $query->where('email', 'like', '%' . request('email') . '%');
@@ -85,7 +85,11 @@ class TicketRepository implements TicketRepositoryInterface
 
     public function updateStatus($ticket, $request)
     {
-        $ticket->update(['status' => $request['status']]);
+        $ticket->update([
+            'status' => $request['status'],
+            'responded_at' => now(),
+            'responded_id' => auth()->id()
+        ]);
 
         return $ticket;
     }

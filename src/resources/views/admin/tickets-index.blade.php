@@ -36,6 +36,7 @@
             <th>Phone</th>
             <th>Status</th>
             <th>Created</th>
+            <th>Responded</th>
             <th></th>
         </tr>
         </thead>
@@ -48,6 +49,7 @@
                 <td>{{$ticket->customer->phone}}</td>
                 <td>{{$ticket->status}}</td>
                 <td>{{$ticket->created_at}}</td>
+                <td>{{$ticket->responded_at}}</td>
                 <td>
                     <a href="{{route('tickets.show', $ticket)}}" class="btn btn-sm btn-primary">View</a>
                     @role('admin')
