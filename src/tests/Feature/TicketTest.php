@@ -11,7 +11,8 @@ use Tests\TestCase;
 
 class TicketTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
+    use RefreshDatabase;
+    use WithFaker;
 
     protected TicketRepository $ticketRepo;
 
@@ -41,7 +42,7 @@ class TicketTest extends TestCase
         Ticket::factory()->create([
             'customer_id' => Customer::factory()->create([
                 'email' => 'test_email@mail.com',
-                'phone' => '+380990000000'
+                'phone' => '+380990000000',
             ]),
             'created_at' => now(),
         ]);
@@ -55,12 +56,15 @@ class TicketTest extends TestCase
 
         $data = ['status' => 'processed'];
 
-        $ticket = $this->ticketRepo->updateStatus(Ticket::factory()
+        $ticket = $this->ticketRepo->updateStatus(
+            Ticket::factory()
             ->create(
                 [
-                    'customer_id' => $user->id
-                ]),
-            $data);
+                    'customer_id' => $user->id,
+                ]
+            ),
+            $data
+        );
         $this->assertEquals('processed', $ticket->status);
         $this->assertEquals($user->id, $ticket->customer_id);
     }

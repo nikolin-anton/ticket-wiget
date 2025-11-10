@@ -32,6 +32,7 @@ class FileService
     public function downloadAllFille(Model $model, string $collection)
     {
         $downloads = $model->getMedia($collection);
+
         return MediaStream::create('files.zip')->addMedia($downloads);
     }
 }

@@ -23,13 +23,13 @@ class TicketStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name'    => 'required|string|max:255',
-            'email'   => 'required|email',
-            'phone'   => 'required|string|regex:/^\+[1-9]\d{1,14}$/',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string|regex:/^\+[1-9]\d{1,14}$/',
             'subject' => 'required|string|max:255',
-            'text'    => 'required|string',
-            'files'   => 'nullable|array',
-            'files.*' => 'file|mimes:pdf,jpeg,jpg,png,gif'
+            'text' => 'required|string',
+            'files' => 'nullable|array',
+            'files.*' => 'file|mimes:pdf,jpeg,jpg,png,gif',
         ];
     }
 
@@ -42,14 +42,15 @@ class TicketStoreRequest extends FormRequest
 
     private function formatPhone(?string $phone): ?string
     {
-        if (!$phone) {
+        if (! $phone) {
             return null;
         }
 
         $phone = preg_replace('/[^\d+]/', '', $phone);
-        if (!str_contains($phone, '+')) {
-            $phone = '+' . $phone;
+        if (! str_contains($phone, '+')) {
+            $phone = '+'.$phone;
         }
+
         return $phone;
     }
 }

@@ -15,8 +15,8 @@ class TicketStatisticResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'day'   => $this->day,
-            'week'  => $this->week,
+            'day' => $this->day,
+            'week' => $this->week,
             'month' => $this->month,
 
         ];

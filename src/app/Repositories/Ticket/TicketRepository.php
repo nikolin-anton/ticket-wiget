@@ -5,7 +5,6 @@ namespace App\Repositories\Ticket;
 use App\Enum\TicketStatusEnum;
 use App\Models\Customer;
 use App\Models\Ticket;
-use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
@@ -17,6 +16,7 @@ class TicketRepository implements TicketRepositoryInterface
     {
         $this->model = $model;
     }
+
     /**
      * @throws FileIsTooBig
      * @throws FileDoesNotExist
@@ -25,22 +25,22 @@ class TicketRepository implements TicketRepositoryInterface
     {
         $customer = Customer::firstOrCreate(
             [
-                'email' => $data['email']
+                'email' => $data['email'],
             ],
             [
-                'name'  => $data['name'],
+                'name' => $data['name'],
                 'phone' => $data['phone'],
             ]
         );
 
-        $ticket          = new Ticket();
+        $ticket = new Ticket();
         $ticket->subject = $data['subject'];
-        $ticket->text    = $data['text'];
-        $ticket->status  = TicketStatusEnum::NEW;
+        $ticket->text = $data['text'];
+        $ticket->status = TicketStatusEnum::NEW;
         $ticket->customer()->associate($customer);
         $ticket->save();
 
-        if (!empty($data['files'])) {
+        if (! empty($data['files'])) {
             foreach ($data['files'] as $file) {
                 $ticket->addMedia($file)->toMediaCollection('tickets');
             }
@@ -55,12 +55,12 @@ class TicketRepository implements TicketRepositoryInterface
             ->with(['customer', 'responded'])
             ->when(request('email'), function ($query) {
                 $query->whereHas('customer', function ($query) {
-                    $query->where('email', 'like', '%' . request('email') . '%');
+                    $query->where('email', 'like', '%'.request('email').'%');
                 });
             })
             ->when(request('phone'), function ($query) {
                 $query->whereHas('customer', function ($query) {
-                    $query->where('phone', 'like', '%' . request('phone') . '%');
+                    $query->where('phone', 'like', '%'.request('phone').'%');
                 });
             })
             ->when(request('status'), function ($query) {
@@ -80,6 +80,7 @@ class TicketRepository implements TicketRepositoryInterface
     {
         $ticket->load('customer');
         $ticket->files = $ticket->getMedia('tickets');
+
         return $ticket;
     }
 
@@ -88,7 +89,7 @@ class TicketRepository implements TicketRepositoryInterface
         $ticket->update([
             'status' => $request['status'],
             'responded_at' => now(),
-            'responded_id' => auth()->id()
+            'responded_id' => auth()->id(),
         ]);
 
         return $ticket;
@@ -99,9 +100,9 @@ class TicketRepository implements TicketRepositoryInterface
         $ticket->delete();
     }
 
-    public function getStatistics():object
+    public function getStatistics(): object
     {
-        return (object)[
+        return (object) [
             'day' => $this->model->query()->lastDay()->count(),
             'week' => $this->model->query()->lastWeek()->count(),
             'month' => $this->model->query()->lastMonth()->count(),
@@ -113,10 +114,20 @@ class TicketRepository implements TicketRepositoryInterface
         return $this->model->query()
             ->where('created_at', '>=', now()->subDay())
             ->where(function ($query) use ($phone, $email) {
-                $query->when($phone, fn ($query) =>
-                $query->orWhereHas('customer', fn($query) => $query->where('phone', 'like', '%' . $phone . '%')))
-                    ->when($email, fn ($query) =>
-                    $query->orWhereHas('customer', fn($query) => $query->where('email', 'like', '%' . $email . '%')));
+                $query->when(
+                    $phone,
+                    fn ($query) => $query->orWhereHas(
+                        'customer',
+                        fn ($query) => $query->where('phone', 'like', '%'.$phone.'%')
+                    )
+                )
+                    ->when(
+                        $email,
+                        fn ($query) => $query->orWhereHas(
+                            'customer',
+                            fn ($query) => $query->where('email', 'like', '%'.$email.'%')
+                        )
+                    );
             })
             ->exists();
     }
