@@ -14,4 +14,6 @@ interface TicketRepositoryInterface
 
     public function destroy($ticket);
 
+    public function getStatistics();
+
 }

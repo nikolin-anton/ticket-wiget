@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\TicketStoreRequest;
 use App\Http\Requests\UpdateStatusRequest;
+use App\Http\Resources\TicketStatisticResource;
 use App\Http\Resources\TicketStoreResource;
 use App\Models\Ticket;
 use App\Repositories\Ticket\TicketRepositoryInterface;
@@ -77,5 +78,12 @@ class TicketController extends Controller
     public function downloadAllFile(Ticket $ticket)
     {
         return $this->fileService->downloadAllFille($ticket, 'tickets');
+    }
+
+    public function statistics()
+    {
+        $statistics = $this->ticket->getStatistics();
+
+        return TicketStatisticResource::make($statistics);
     }
 }

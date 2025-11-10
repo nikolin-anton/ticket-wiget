@@ -5,11 +5,18 @@ namespace App\Repositories\Ticket;
 use App\Enum\TicketStatusEnum;
 use App\Models\Customer;
 use App\Models\Ticket;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
 
 class TicketRepository implements TicketRepositoryInterface
 {
+    protected Ticket $model;
+
+    public function __construct(Ticket $model)
+    {
+        $this->model = $model;
+    }
     /**
      * @throws FileIsTooBig
      * @throws FileDoesNotExist
@@ -86,5 +93,14 @@ class TicketRepository implements TicketRepositoryInterface
     public function destroy($ticket)
     {
         $ticket->delete();
+    }
+
+    public function getStatistics():object
+    {
+        return (object)[
+            'day' => $this->model->query()->lastDay()->count(),
+            'week' => $this->model->query()->lastWeek()->count(),
+            'month' => $this->model->query()->lastMonth()->count(),
+        ];
     }
 }
