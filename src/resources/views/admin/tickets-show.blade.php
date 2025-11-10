@@ -1,3 +1,4 @@
+@php use App\Enum\TicketStatusEnum; @endphp
 @extends('layout.admin')
 
 @section('content')
@@ -20,10 +21,11 @@
             <div class="d-flex gap-2">
                 <p><b>Status</b></p>
                 <select name="status" class="form-select w-auto">
-                    <option value="new" {{$ticket->status == 'new' ? 'selected' : ''}}>New</option>
-                    <option value="in_progress" {{$ticket->status == 'in_progress' ? 'selected' : ''}}>In progress
-                    </option>
-                    <option value="processed" {{$ticket->status == 'processed' ? 'selected' : ''}}>Processed</option>
+                    @foreach(TicketStatusEnum::cases() as $status)
+                        <option value="{{$status->value}}" {{$ticket->status === $status->value ? 'selected' : ''}}>
+                            {{$status->label()}}
+                        </option>
+                    @endforeach
                 </select>
                 <button class="btn btn-primary">Update</button>
             </div>
@@ -76,10 +78,10 @@
     @endif
 
     @role('admin')
-        <form method="POST" action="{{route('tickets.destroy', $ticket->id)}}" class="d-inline">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
-        </form>
+    <form method="POST" action="{{route('tickets.destroy', $ticket->id)}}" class="d-inline">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+    </form>
     @endrole
 @endsection
