@@ -82,4 +82,9 @@ class TicketRepository implements TicketRepositoryInterface
 
         return $ticket;
     }
+
+    public function destroy($ticket)
+    {
+        $ticket->delete();
+    }
 }

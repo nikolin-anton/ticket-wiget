@@ -67,11 +67,19 @@
         @endif
     </div>
 
-    <div class="card p-3">
-        @if($ticket->files->count())
+    @if($ticket->files->count())
+        <div class="card p-3 mb-2">
             <a href="{{route('tickets.downloadAllFile', $ticket->id)}}"
                class="btn btn-sm btn-primary" style="width: 180px"
             >Download All (ZIP)</a>
-        @endif
-    </div>
+        </div>
+    @endif
+
+    @role('admin')
+        <form method="POST" action="{{route('tickets.destroy', $ticket->id)}}" class="d-inline">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+        </form>
+    @endrole
 @endsection
